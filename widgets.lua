@@ -22,16 +22,13 @@ local battery = {}
 local function get_adapter()
 	local f = io.open("/proc/net/wireless")
 	local target
-	local n = 0
+	local contents = {}
 
 	for line in f:lines() do
-		n = n + 1
-		if  n == 3 then
-			target = line
-			break
-		end
+		table.insert(contents,line)
 	end
 
+	target = contents[3]
 	if (string.match(target, "^%w+")) then
 		name = string.match(target, "^%w+")
 	end
@@ -79,7 +76,7 @@ function widgets.cpu()
 	vicious.register(cpuwidget, vicious.widgets.cpu,
 		function (widget, args)
 			cpuuse = "" 
-			cores = 8 --set # of cores/cpus
+			cores = tonumber(awful.util.pread("cat /proc/cpuinfo  | egrep -i processor | wc -l"))
 			for i = 1,cores do
 				if args[i+1] >= 0 and args[i+1] < 10 then
 					coreuse = theme.fg(theme.green, "0" .. args[i+1])
@@ -127,7 +124,7 @@ function widgets.wifi()
 	wifiicon.image = image(beautiful.widget_wifi_hi)
 	
 	local wifiwidget = widget({ type = "textbox" }) 
-	
+
 	vicious.register(wifiwidget, vicious.widgets.wifi,
 		function (widget, args)
 			if args["{link}"] == 0 then
