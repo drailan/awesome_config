@@ -1,5 +1,7 @@
 --keybindings--
 
+local vicious = require("vicious")
+
 local keybindings = {}
 
 function keybindings.get_global_keys()
@@ -18,7 +20,12 @@ function keybindings.get_global_keys()
                 awful.client.focus.byidx(-1)
                 if client.focus then client.focus:raise() end
             end),
-        awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+        awful.key({ modkey }, "w",          function () awful.util.spawn("google-chrome-stable") end),
+
+
+        -- volume keys --
+        awful.key({ modkey }, "#75",        function () awful.util.spawn("amixer -c 0 set Master 1+",false) vicious.force({ volume }) end),
+        awful.key({ modkey }, "#74",        function () awful.util.spawn("amixer -c 0 set Master 1-",false) vicious.force({ volume }) end),
 
         -- Layout manipulation
         awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -34,7 +41,6 @@ function keybindings.get_global_keys()
                 end
             end),
 
-        -- Standard program
         awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
         awful.key({ modkey, "Control" }, "r", awesome.restart),
         awful.key({ modkey, "Shift"   }, "q", awesome.quit),
