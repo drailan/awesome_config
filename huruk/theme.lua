@@ -9,6 +9,8 @@ theme = {}
 function theme.fg(color, text) 
 	return '<span color="' .. color .. '">' .. text .. '</span>' end 
 
+local na = awful.util.color_strip_alpha
+
 function theme.init()
 	theme.spacer.text= " "
 	theme.leftcap.text = theme.fg(theme.grey, "[") 
@@ -27,6 +29,22 @@ theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
+
+-- todo figure out colors --
+theme.grey = "#404040"
+theme.bgrey = "#555753"
+theme.red = "#CC0000"
+theme.bred = "#EF2929"
+theme.green = "#4E9A06"
+theme.bgreen = "#8AE234"
+theme.yellow = "#C4A000"
+theme.byellow = "#FCE94F"
+theme.blue = "#195089"
+theme.bblue = "#729FCF"
+theme.purple = "#75507B"
+theme.bpurple = "#AD7FAB"
+theme.cyan = "#16A8AA"
+theme.bcyan = "#34E2E2"
 
 theme.border_width  = "1"
 theme.border_normal = "#000000"
@@ -86,26 +104,13 @@ theme.layout_tiletop = AWESOME_DIR .. "/huruk/layouts/tiletopw.png"
 theme.layout_spiral  = AWESOME_DIR .. "/huruk/layouts/spiralw.png"
 theme.layout_dwindle = AWESOME_DIR .. "/huruk/layouts/dwindlew.png"
 
-
--- todo figure out colors --
-theme.grey = "#404040"
-theme.bgrey = "#555753"
-theme.red = "#CC0000"
-theme.bred = "#EF2929"
-theme.green = "#4E9A06"
-theme.bgreen = "#8AE234"
-theme.yellow = "#C4A000"
-theme.byellow = "#FCE94F"
-theme.blue = "#195089"
-theme.bblue = "#729FCF"
-theme.purple = "#75507B"
-theme.bpurple = "#AD7FAB"
-theme.cyan = "#16A8AA"
-theme.bcyan = "#34E2E2"
-
 theme.spacer = widget({ type = "textbox"})
 theme.leftcap = widget({ type = "textbox"})
 theme.midcap = widget({ type = "textbox"})
 theme.rightcap = widget({ type = "textbox"})
+
+theme.fg_widget_clock  = na(theme.border_focus)
+theme.fg_widget_value  = na(theme.fg_normal)
+theme.fg_widget_value_important  = "#E80F28"
 
 return theme
