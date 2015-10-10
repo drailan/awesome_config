@@ -7,36 +7,6 @@ local widgets = {}
 -- todo change your adapter name -- 
 local WIFI_ADAPTER_NAME = "wlp6s0"
 
-grey = "#404040"
-bgrey = "#555753"
-red = "#CC0000"
-bred = "#EF2929"
-green = "#4E9A06"
-bgreen = "#8AE234"
-yellow = "#C4A000"
-byellow = "#FCE94F"
-blue = "#195089"
-bblue = "#729FCF"
-purple = "#75507B"
-bpurple = "#AD7FAB"
-cyan = "#16A8AA"
-bcyan = "#34E2E2"
-
--- helpers --
-local spacer = widget({ type = "textbox"})
-local leftcap = widget({ type = "textbox"})
-local midcap = widget({ type = "textbox"})
-local rightcap = widget({ type = "textbox"})
-
-local function fg(color, text) return '<span color="' .. color .. '">' .. text .. '</span>' end 
-
-function widgets.init()
-	spacer.text= " "
-	leftcap.text = fg(grey, "[") 
-	midcap.text = fg(grey, "][")
-	rightcap.text = fg(grey, "]")
-end
-
 -- widget types --
 local clock = {}
 local memory = {}
@@ -73,7 +43,7 @@ function widgets.memory()
 
 	memory = {
 		memicon,
-		spacer,
+		theme.spacer,
 		memwidget,
 	}
 
@@ -91,19 +61,19 @@ function widgets.cpu()
 		  cores = 8 --set # of cores/cpus
 		  for i = 1,cores do
 		    if args[i+1] >= 0 and args[i+1] < 10 then
-		      coreuse = fg(green, "0" .. args[i+1])   
+		      coreuse = theme.fg(theme.green, "0" .. args[i+1])   
 		    elseif  args[i+1] >= 40 and args[i+1] < 80 then
-		      coreuse = fg(yellow, args[i+1])
+		      coreuse = theme.fg(theme.yellow, args[i+1])
 		    elseif args[i+1] >= 80 and args[i+1] < 100 then
-		      coreuse = fg(red, args[i+1]) 
+		      coreuse = theme.fg(theme.red, args[i+1]) 
 		    elseif args[i+1] >= 100 then
-		      coreuse = fg(bred, "**") 
+		      coreuse = theme.fg(theme.bred, "**") 
 		    else
-		      coreuse = fg(green, args[i+1])
+		      coreuse = theme.fg(theme.green, args[i+1])
 		    end
 		    
 		    if i < cores then 
-		    	cpuuse = cpuuse .. coreuse .. fg(grey, "•")
+		    	cpuuse = cpuuse .. coreuse .. theme.fg(theme.grey, "•")
 	      	else 
 	      		cpuuse = cpuuse .. coreuse
 		    end
@@ -121,7 +91,7 @@ function widgets.cpu()
 
 	cpu = {
 		cpuicon,
-		spacer,
+		theme.spacer,
 		cpuwidget
 	}	
 
@@ -137,22 +107,22 @@ function widgets.wifi()
      function (widget, args)
       if args["{link}"] == 0 then
         wifiicon.image = image(beautiful.widget_wifi_off)
-        return fg(bred, "∅")
+        return theme.fg(theme.bred, "∅")
       elseif args["{rate}"] <= 11 then
         wifiicon.image = image(beautiful.widget_wifi_lo)
-        return string.format("%s " .. fg(red, "(%i mbps)"), args["{ssid}"], args["{rate}"])
+        return string.format("%s " .. theme.fg(theme.red, "(%i mbps)"), args["{ssid}"], args["{rate}"])
       elseif args["{rate}"] > 11 and args["{rate}"] < 54 then
         wifiicon.image = image(beautiful.widget_wifi_mid)
-        return string.format("%s " .. fg(yellow, "(%i mbps)"), args["{ssid}"], args["{rate}"])
+        return string.format("%s " .. theme.fg(theme.yellow, "(%i mbps)"), args["{ssid}"], args["{rate}"])
       else
         wifiicon.image = image(beautiful.widget_wifi_hi)
-        return string.format("%s " .. fg(green, "(%i mbps)"), args["{ssid}"], args["{rate}"])
+        return string.format("%s " .. theme.fg(theme.green, "(%i mbps)"), args["{ssid}"], args["{rate}"])
       end
      end, 11, WIFI_ADAPTER_NAME)
 
 	wifi = {
 		wifiicon,
-		spacer,
+		theme.spacer,
 		wifiwidget
 	}
 
@@ -178,7 +148,7 @@ function widgets.mpd()
 
 	mpd = {
 		mpdicon,
-		spacer,
+		theme.spacer,
 		mpdwidget
 	}
 
@@ -189,11 +159,11 @@ function widgets.hostname()
 	local hosticon = widget({ type = "imagebox" })
 	hosticon.image = image(beautiful.widget_host)
 	local hostnamewidget = widget({ type = "textbox" }) --display username@hostname
-	vicious.register(hostnamewidget, vicious.widgets.os, fg(green, "$3") .. fg(cyan, "@$4"), 3600)
+	vicious.register(hostnamewidget, vicious.widgets.os, theme.fg(theme.green, "$3") .. theme.fg(theme.cyan, "@$4"), 3600)
 
 	hostname = {
 		hosticon,
-		spacer,
+		theme.spacer,
 		hostnamewidget,
 		layout = awful.widget.layout.horizontal.rightleft
 	}

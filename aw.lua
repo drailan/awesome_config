@@ -18,7 +18,9 @@ local CONFIG_DIR = awful.util.getdir("config");
 
 -- theme init --
 beautiful.init(CONFIG_DIR .. "/huruk/theme.lua")
-widgets.init()
+theme.init()
+
+-- widgets.init()
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -49,8 +51,8 @@ layouts =
 -- tags -- 
 -- pick your layouts for each screen -- 
 tags = {
-    -- names  = { "α", "β", "γ", "δ", "ε" }, 
-   names  = { "но", "ня", "ню", "не", "нах" },
+   -- names  = { "α", "β", "γ", "δ", "ε" }, 
+   names  = { "α", "ня", "γ", "δ", "ε" }, 
    layout = { layouts[2], layouts[2], layouts[2], layouts[2], layouts[2] }
         }
 for s = 1, screen.count() do
@@ -62,42 +64,6 @@ mymenu = awful.menu({items = menu.get_menu()})
 mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymenu })
 
--- {{{ Widgets
-
---Separators
-
-grey = "#404040"
-bgrey = "#555753"
-red = "#CC0000"
-bred = "#EF2929"
-green = "#4E9A06"
-bgreen = "#8AE234"
-yellow = "#C4A000"
-byellow = "#FCE94F"
-blue = "#195089"
-bblue = "#729FCF"
-purple = "#75507B"
-bpurple = "#AD7FAB"
-cyan = "#16A8AA"
-bcyan = "#34E2E2"
-
-local function fg(color, text) return '<span color="' .. color .. '">' .. text .. '</span>' end 
-
-spacer = widget({ type = "textbox"})
-leftcap = widget({ type = "textbox"})
-midcap = widget({ type = "textbox"})
-rightcap = widget({ type = "textbox"})
-
-spacer.text= " "
-leftcap.text = fg(grey, "[") 
-midcap.text = fg(grey, "][")
-rightcap.text = fg(grey, "]")
-
-hosticon = widget({ type = "imagebox" })
-hosticon.image = image(beautiful.widget_host)
-hostname = widget({ type = "textbox" }) --display username@hostname
-vicious.register(hostname, vicious.widgets.os, fg(green, "$3") .. fg(cyan, "@$4"), 3600)
-
 baticon = widget({ type = "imagebox" })
 baticon.image = image(beautiful.widget_bat_hi)
 batchrg = widget({ type = "imagebox" })
@@ -107,18 +73,18 @@ vicious.register(battery, vicious.widgets.bat,
   function (widget, args)
     if args[2] >= 30 and args [2] < 75 then
       baticon.image = image(beautiful.widget_bat_mid)
-      return fg(yellow, args[3])
+      return theme.fg(theme.yellow, args[3])
     elseif args[2] >= 10 and args[2] < 30 then
       baticon.image = image(beautiful.widget_bat_lo)
-      return fg(red, args[3])
+      return theme.fg(theme.red, args[3])
     elseif args[2] >= 6 and args[2] < 10 then
       baticon.image = image(beautiful.widget_bat_lo)
-      return fg(red, args[3])
+      return theme.fg(theme.red, args[3])
     elseif args[2] < 6 then
       baticon.image = image(beautiful.widget_bat_crit)
     else
       baticon.image = image(beautiful.widget_bat_hi)
-      return fg(green, args[3])
+      return theme.fg(theme.green, args[3])
     end
 
   end, 61, "BAT0")
@@ -130,21 +96,19 @@ vicious.register(volume, vicious.widgets.volume,
 function (widget, args)
   if args[1] >= 37 and args[1] < 66 then
     volicon.image = image(beautiful.widget_vol_mid)
-    return fg(yellow, args[1])
+    return theme.fg(theme.yellow, args[1])
   elseif args[1] >= 66 then
     volicon.image = image(beautiful.widget_vol_hi)
-    return fg(green, args[1])
+    return theme.fg(theme.green, args[1])
   elseif args[1] == 0 then
     volicon.image = image(beautiful.widget_vol_mute)
-    return fg(red, args[1])
+    return theme.fg(theme.red, args[1])
   else
     volicon.image = image(beautiful.widget_vol_lo)
-    return fg(red, args[1])
+    return theme.fg(theme.red, args[1])
   end
 end, 5, "Master")
--- }}}
 
--- {{{ Clientbox and Statusbox
 clientbox = {}
 statusbox= {}
 promptbox = {}
@@ -206,18 +170,18 @@ for s = 1, screen.count() do
       },
       layoutbox[s],
 
-      rightcap,
+      theme.rightcap,
       widgets.clock(),
-      midcap,
+      theme.midcap,
       battery,
-      spacer,
+      theme.spacer,
       batchrg,
       baticon,
-      midcap,
+      theme.midcap,
       volume,
-      spacer,
+      theme.spacer,
       volicon,
-      leftcap,
+      theme.leftcap,
     
       s == 1 and widgets.systray() or nil,
       tasklist[s],
@@ -227,20 +191,20 @@ for s = 1, screen.count() do
     statusbox[s] = awful.wibox({ position = "bottom", height = "16", screen = s })
     statusbox[s].widgets = {
       { 
-        leftcap,
+        theme.leftcap,
         widgets.cpu(),
-        midcap,
+        theme.midcap,
         widgets.memory(),
-        midcap,
+        theme.midcap,
         widgets.wifi(),
-        midcap,
+        theme.midcap,
         widgets.mpd(),
-        rightcap,
+        theme.rightcap,
         layout = awful.widget.layout.horizontal.leftright
       },
-      rightcap,
+      theme.rightcap,
       widgets.hostname(),
-      leftcap,
+      theme.leftcap,
       layout = awful.widget.layout.horizontal.rightleft
   }
 end
@@ -319,13 +283,7 @@ awful.rules.rules = {
     { rule = { class = "MPlayer" }, properties = { floating = true } }
 }
 
--- {{{ Signals
--- Signal function to execute when a new client appears.
 client.add_signal("manage", function (c, startup)
-    -- Add a titlebar
-    -- awful.titlebar.add(c, { modkey = modkey })
-
-    -- Enable sloppy focus
     c:add_signal("mouse::enter", function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
             and awful.client.focus.filter(c) then
@@ -334,11 +292,6 @@ client.add_signal("manage", function (c, startup)
     end)
 
     if not startup then
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
-        -- awful.client.setslave(c)
-
-        -- Put windows in a smart way, only if they does not set an initial position.
         if not c.size_hints.user_position and not c.size_hints.program_position then
             awful.placement.no_overlap(c)
             awful.placement.no_offscreen(c)
