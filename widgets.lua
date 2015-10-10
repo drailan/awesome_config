@@ -4,8 +4,9 @@ local beautiful = require("beautiful")
 
 local widgets = {}
 
--- todo change your adapter name -- 
+-- your variables here -- 
 local WIFI_ADAPTER_NAME = "wlp6s0"
+local BATTERY_NAME 		= "BAT1"
 
 -- widget types --
 local clock = {}
@@ -16,6 +17,7 @@ local wifi = {}
 local mpd = {}
 local hostmame = {}
 local volume = {}
+local battery = {}
 -------------------
 
 -- widget creation functions --
@@ -169,6 +171,74 @@ function widgets.hostname()
 	}
 
 	return hostname
+end
+
+function widgets.volume()
+	local volicon = widget({ type = "imagebox" })
+	volicon.image = image(beautiful.widget_vol_hi)
+	local volumewidget = widget({ type = "textbox" }) --display volume
+	vicious.register(volumewidget, vicious.widgets.volume, 
+	function (widget, args)
+	  if args[1] >= 37 and args[1] < 66 then
+	    volicon.image = image(beautiful.widget_vol_mid)
+	    return theme.fg(theme.yellow, args[1])
+	  elseif args[1] >= 66 then
+	    volicon.image = image(beautiful.widget_vol_hi)
+	    return theme.fg(theme.green, args[1])
+	  elseif args[1] == 0 then
+	    volicon.image = image(beautiful.widget_vol_mute)
+	    return theme.fg(theme.red, args[1])
+	  else
+	    volicon.image = image(beautiful.widget_vol_lo)
+	    return theme.fg(theme.red, args[1])
+	  end
+	end, 5, "Master")
+
+	volume = {
+		volumewidget,
+		theme.spacer,
+		volicon,
+		layout = awful.widget.layout.horizontal.rightleft
+	}
+
+	return volume
+end
+
+function widgets.battery() 
+	local baticon = widget({ type = "imagebox" })
+	baticon.image = image(beautiful.widget_bat_hi)
+	local batchrg = widget({ type = "imagebox" })
+	batchrg.image = image(beautiful.widget_bat_full)
+	local batterywidget = widget({ type = "textbox" }) --display battery state and charge
+	vicious.register(batterywidget, vicious.widgets.bat,
+	  function (widget, args)
+	    if args[2] >= 30 and args [2] < 75 then
+	      baticon.image = image(beautiful.widget_bat_mid)
+	      return theme.fg(theme.yellow, args[2] .. "%")
+	    elseif args[2] >= 10 and args[2] < 30 then
+	      baticon.image = image(beautiful.widget_bat_lo)
+	      return theme.fg(theme.red, args[2] .. "%")
+	    elseif args[2] >= 6 and args[2] < 10 then
+	      baticon.image = image(beautiful.widget_bat_lo)
+	      return theme.fg(theme.red, args[2] .. "%")
+	    elseif args[2] < 6 then
+	      baticon.image = image(beautiful.widget_bat_crit)
+	    else
+	      baticon.image = image(beautiful.widget_bat_hi)
+	      return theme.fg(theme.green, args[2] .. "%")
+	    end
+
+	  end, 61, BATTERY_NAME)
+
+	battery = {
+		batterywidget,
+		theme.spacer,
+		batchrg,
+		baticon,
+		layout = awful.widget.layout.horizontal.rightleft
+	}
+
+	return battery
 end
 
 return widgets
