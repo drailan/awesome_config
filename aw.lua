@@ -8,10 +8,10 @@ local beautiful   = require("beautiful")
 local naughty     = require("naughty")
 local vicious     = require("vicious")
 
-local keybindings = require("keybindings")
-local menu        = require("menu")
-local tasklist    = require("tasklist")
-local widgets     = require("widgets")
+local keybindings = require("huruk/keybindings")
+local menu        = require("huruk/menu")
+local tasklist    = require("huruk/tasklist")
+local widgets     = require("huruk/widgets")
 
 -- home --
 local CONFIG_DIR = awful.util.getdir("config");

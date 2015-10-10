@@ -20,8 +20,10 @@ function keybindings.get_global_keys()
                 awful.client.focus.byidx(-1)
                 if client.focus then client.focus:raise() end
             end),
-        awful.key({ modkey }, "w",          function () awful.util.spawn("google-chrome-stable") end),
 
+        -- programs --
+        awful.key({ modkey }, "w",          function () awful.util.spawn("google-chrome-stable") end),
+        awful.key({ modkey,    }, "Return", function () awful.util.spawn(terminal) end),
 
         -- volume keys --
         awful.key({ modkey }, "#75",        function () awful.util.spawn("amixer -c 0 set Master 1+",false) vicious.force({ volume }) end),
@@ -40,8 +42,7 @@ function keybindings.get_global_keys()
                     client.focus:raise()
                 end
             end),
-
-        awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+        
         awful.key({ modkey, "Control" }, "r", awesome.restart),
         awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
