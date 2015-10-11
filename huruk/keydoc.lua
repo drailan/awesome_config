@@ -24,8 +24,8 @@ local orig = awful.key.new
 
 -- Replacement for awful.key.new
 local function new(mod, key, press, release, docstring)
-   -- Usually, there is no use of release, let's just use it for doc
-   -- if it's a string.
+   	-- Usually, there is no use of release, let's just use it for doc
+   	-- if it's a string.
 	if press and release and not docstring and type(release) == "string" then
 		docstring = release
 		release = nil
