@@ -6,8 +6,7 @@ local AWESOME_DIR = awful.util.getdir("config")
 
 theme = {}
 
-function theme.fg(color, text) 
-	return '<span color="' .. color .. '">' .. text .. '</span>' end 
+function theme.fg(color, text) return '<span color="' .. color .. '">' .. text .. '</span>' end 
 
 local na = awful.util.color_strip_alpha
 
