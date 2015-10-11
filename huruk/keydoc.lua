@@ -34,8 +34,9 @@ local function new(mod, key, press, release, docstring)
    	local k = orig(mod, key, press, release)
    	-- Remember documentation for this key (we take the first one)
    	if k and #k > 0 and docstring then
-	  	doc[k[1]] = { help = docstring,
-		group = currentgroup }
+	  	doc[k[1]] = { 
+	  		help = docstring, group = currentgroup 
+	  	}
    	end
 
    	return k
@@ -95,7 +96,7 @@ local function markup(keys)
 
 		local skey = key2str(key)
 		result[group] = (result[group] or "") ..
-			'<span font="DejaVu Sans Mono 10" color="' .. beautiful.fg_widget_clock .. '"> ' ..
+			'<span font="Terminus 8" color="' .. beautiful.fg_widget_clock .. '"> ' ..
 			string.format("%" .. (longest - unilen(skey)) .. "s  ", "") .. skey ..
 			'</span>  <span color="' .. beautiful.fg_widget_value .. '">' ..
 			help .. '</span>\n'
@@ -110,7 +111,8 @@ local nid = nil
 function keydoc.display()
    	local strings = awful.util.table.join(
   		markup(capi.root.keys()),
-	  	capi.client.focus and markup(capi.client.focus:keys()) or {})
+	  	capi.client.focus and markup(capi.client.focus:keys()) or {}
+	)
 
    	local result = ""
    	for group, res in pairs(strings) do
