@@ -79,19 +79,43 @@ function widgets.cpu()
 			cores = tonumber(awful.util.pread("cat /proc/cpuinfo  | egrep -i processor | wc -l"))
 			for i = 1,cores do
 				if args[i+1] >= 0 and args[i+1] < 10 then
-					coreuse = theme.fg({ color = theme.cpu_low, text = "0" .. args[i+1] })
+					if theme.fg then
+						coreuse = theme.fg({ color = theme.cpu_low, text = "0" .. args[i+1] })
+					else
+						coreuse = "0" .. args[i+1]
+					end
 				elseif  args[i+1] >= 40 and args[i+1] < 80 then
-					coreuse = theme.fg({ color=theme.cpu_med, text=args[i+1] })
+					if theme.fg then
+						coreuse = theme.fg({ color=theme.cpu_med, text=args[i+1] })
+					else
+						coreuse = args[i+1]
+					end
 				elseif args[i+1] >= 80 and args[i+1] < 100 then
-					coreuse = theme.fg({ color = theme.cpu_high, text = args[i+1] }) 
+					if theme.fg then
+						coreuse = theme.fg({ color = theme.cpu_high, text = args[i+1] }) 
+					else
+						coreuse = args[i+1]
+					end
 				elseif args[i+1] >= 100 then
-					coreuse = theme.fg({ color = theme.wtf, text =  "**" }) 
+					if theme.fg then
+						coreuse = theme.fg({ color = theme.wtf, text =  "**" }) 
+					else
+						coreuse = "**"
+					end
 				else
-					coreuse = theme.fg({ color = theme.cpu_low, text = args[i+1]})
+					if theme.fg then
+						coreuse = theme.fg({ color = theme.cpu_low, text = args[i+1]})
+					else
+						coreuse = args[i+1]
+					end
 				end
 			
-				if i < cores then 
-					cpuuse = cpuuse .. coreuse .. theme.fg({ color = theme.cpu_spacer, text = "•" })
+				if i < cores then
+					if theme.fg then
+						cpuuse = cpuuse .. coreuse .. theme.fg({ color = theme.cpu_spacer, text = "•" })
+					else
+						cpuuse = cpuuse .. coreuse .. "•"
+					end
 				else 
 					cpuuse = cpuuse .. coreuse
 				end
