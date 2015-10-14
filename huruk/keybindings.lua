@@ -9,14 +9,14 @@ function keybindings.get_global_keys()
 
     local globalkeys = awful.util.table.join(
         keydoc.group("Virtual desktops"),
-        awful.key({ modkey,           }, "Left",   awful.tag.viewprev, "Switch to previous"       ),
-        awful.key({ modkey,           }, "Right",  awful.tag.viewnext, "Switch to next"       ),
-        awful.key({ modkey,           }, "Escape", awful.tag.history.restore, "Restore history"),
+        awful.key({ modkey,           }, "Left",   awful.tag.viewprev, "Switch to previous"         ),
+        awful.key({ modkey,           }, "Right",  awful.tag.viewnext, "Switch to next"             ),
+        awful.key({ modkey,           }, "Escape", awful.tag.history.restore, "Restore history"     ),
 
         keydoc.group("Focus"),
         awful.key({ modkey,           }, "j",
             function ()
-                awful.client.focus.byidx( 1)
+                awful.client.focus.byidx(1)
                 if client.focus then client.focus:raise() end
             end, "Focus next window"),
         awful.key({ modkey,           }, "k",
@@ -28,6 +28,7 @@ function keybindings.get_global_keys()
         -- programs --
         keydoc.group("Programs"),
         awful.key({ modkey }, "w",          function () awful.util.spawn("google-chrome-stable") end, "Google Chrome"),
+        awful.key({ modkey }, "p",          function () awful.util.spawn("pidgin") end, "Pidgin"),
         awful.key({ modkey,    }, "Return", function () awful.util.spawn(terminal) end, "Terminal"),
 
         -- volume keys --
@@ -52,7 +53,7 @@ function keybindings.get_global_keys()
         
         keydoc.group("Awesome control"),
         awful.key({ modkey, "Control" }, "r", awesome.restart, "Restart"),
-        awful.key({ modkey, "Shift"   }, "q", awesome.quit, "Quit"),
+        awful.key({ modkey, "Shift"   }, "q", awesome.quit, "Quit"      ),
 
         keydoc.group("Window manipulation"),
         awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end, "Increase master window width"),

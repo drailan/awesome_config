@@ -57,7 +57,7 @@ function widgets.memory()
 	memicon.image = image(beautiful.widget_mem_lo)
 
 	local memwidget = widget({ type = "textbox" })
-	vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)", 13)
+	vicious.register(memwidget, vicious.widgets.mem, theme.fg({ color = theme.memory, text = "$1% ($2MB/$3MB)"}), 13)
 
 	memory = {
 		memicon,
@@ -79,19 +79,19 @@ function widgets.cpu()
 			cores = tonumber(awful.util.pread("cat /proc/cpuinfo  | egrep -i processor | wc -l"))
 			for i = 1,cores do
 				if args[i+1] >= 0 and args[i+1] < 10 then
-					coreuse = theme.fg(theme.green, "0" .. args[i+1])
+					coreuse = theme.fg({ color = theme.cpu_low, text = "0" .. args[i+1] })
 				elseif  args[i+1] >= 40 and args[i+1] < 80 then
-					coreuse = theme.fg(theme.yellow, args[i+1])
+					coreuse = theme.fg({ color=theme.cpu_med, text=args[i+1] })
 				elseif args[i+1] >= 80 and args[i+1] < 100 then
-					coreuse = theme.fg(theme.red, args[i+1]) 
+					coreuse = theme.fg({ color = theme.cpu_high, text = args[i+1] }) 
 				elseif args[i+1] >= 100 then
-					coreuse = theme.fg(theme.bred, "**") 
+					coreuse = theme.fg({ color = theme.wtf, text =  "**" }) 
 				else
-					coreuse = theme.fg(theme.green, args[i+1])
+					coreuse = theme.fg({ color = theme.cpu_low, text = args[i+1]})
 				end
 			
 				if i < cores then 
-					cpuuse = cpuuse .. coreuse .. theme.fg(theme.grey, "•")
+					cpuuse = cpuuse .. coreuse .. theme.fg({ color = theme.cpu_spacer, text = "•" })
 				else 
 					cpuuse = cpuuse .. coreuse
 				end
@@ -129,16 +129,16 @@ function widgets.wifi()
 		function (widget, args)
 			if args["{link}"] == 0 then
 				wifiicon.image = image(beautiful.widget_wifi_off)
-				return theme.fg(theme.bred, "∅")
+				return theme.fg({ color = theme.wifi_off, text = "∅" })
 			elseif args["{rate}"] <= 11 then
 				wifiicon.image = image(beautiful.widget_wifi_lo)
-				return string.format("%s " .. theme.fg(theme.red, "(%i mbps)"), args["{ssid}"], args["{rate}"])
+				return string.format(theme.fg({ color = theme.wifi_low, text = "%s " }) .. theme.fg({ color = theme.wifi_low, text = "(%i mbps)" }), args["{ssid}"], args["{rate}"])
 			elseif args["{rate}"] > 11 and args["{rate}"] < 54 then
 				wifiicon.image = image(beautiful.widget_wifi_mid)
-				return string.format("%s " .. theme.fg(theme.yellow, "(%i mbps)"), args["{ssid}"], args["{rate}"])
+				return string.format(theme.fg({ color = theme.wifi_mid, text = "%s " }) .. theme.fg({ color = theme.wifi_mid, text = "(%i mbps)" }), args["{ssid}"], args["{rate}"])
 			else
 				wifiicon.image = image(beautiful.widget_wifi_hi)
-				return string.format("%s " .. theme.fg(theme.green, "(%i mbps)"), args["{ssid}"], args["{rate}"])
+				return string.format(theme.fg({ color = theme.wifi_hi, text = "%s " }) .. theme.fg({ color = theme.wifi_hi, text = "(%i mbps)" }), args["{ssid}"], args["{rate}"])
 			end
 		 end, 11, adapter)
 
@@ -158,13 +158,13 @@ function widgets.mpd()
 		function (widget, args)
 			if args["{state}"] == "Stop" then 
 				mpdicon.image = image(beautiful.widget_stop)
-				return args["{Artist}"] ..' - '.. args["{Title}"]
+				return theme.fg({ text = args["{Artist}"] ..' - '.. args["{Title}"], color = theme.mpd_stopped })
 			elseif args["{state}"] == "Pause" then
 				mpdicon.image = image(beautiful.widget_pause)
-				return args["{Artist}"] ..' - '.. args["{Title}"]
+				return theme.fg({ text = args["{Artist}"] ..' - '.. args["{Title}"], color = theme.mpd_paused })
 			else
 				mpdicon.image = image(beautiful.widget_play)
-				return args["{Artist}"] ..' - '.. args["{Title}"]
+				return theme.fg({ text = args["{Artist}"] ..' - '.. args["{Title}"], color = theme.mpd_playing })
 			end
 		end, 3)
 
@@ -181,7 +181,10 @@ function widgets.hostname()
 	local hosticon = widget({ type = "imagebox" })
 	hosticon.image = image(beautiful.widget_host)
 	local hostnamewidget = widget({ type = "textbox" }) --display username@hostname
-	vicious.register(hostnamewidget, vicious.widgets.os, theme.fg(theme.green, "$3") .. theme.fg(theme.cyan, "@$4"), 3600)
+	vicious.register(
+		hostnamewidget, 
+		vicious.widgets.os, 
+		theme.fg({ color = theme.hostname_host, text =  "$3" }) .. theme.fg({ color = theme.hostname_at, text = "@" }) .. theme.fg({ color = theme.hostname_hostname, text = "$4" }), 3600)
 
 	hostname = {
 		hosticon,
@@ -201,16 +204,16 @@ function widgets.volume()
 		function (widget, args)
 			if args[1] >= 37 and args[1] < 66 then
 				volicon.image = image(beautiful.widget_vol_mid)
-				return theme.fg(theme.yellow, args[1])
+				return theme.fg({ color = theme.volume_mid, text = args[1] })
 			elseif args[1] >= 66 then
 				volicon.image = image(beautiful.widget_vol_hi)
-				return theme.fg(theme.green, args[1])
+				return theme.fg({ color = theme.volume_hi, text = args[1] })
 			elseif args[1] == 0 then
 				volicon.image = image(beautiful.widget_vol_mute)
-				return theme.fg(theme.red, args[1])
+				return theme.fg({ color = theme.volume_low, text = args[1] })
 			else
 				volicon.image = image(beautiful.widget_vol_lo)
-				return theme.fg(theme.red, args[1])
+				return theme.fg({ color = theme.volume_wtf, text = args[1] })
 			end
 		end, 5, "Master")
 
@@ -234,18 +237,18 @@ function widgets.battery(bat)
 		function (widget, args)
 			if args[2] >= 30 and args [2] < 75 then
 				baticon.image = image(beautiful.widget_bat_mid)
-				return theme.fg(theme.yellow, args[2] .. "%")
+				return theme.fg({ color = theme.battery_mid, text = args[2] .. "%" })
 			elseif args[2] >= 10 and args[2] < 30 then
 				baticon.image = image(beautiful.widget_bat_lo)
-				return theme.fg(theme.red, args[2] .. "%")
+				return theme.fg({ color = theme.battery_lo, text = args[2] .. "%" })
 			elseif args[2] >= 6 and args[2] < 10 then
 				baticon.image = image(beautiful.widget_bat_lo)
-				return theme.fg(theme.red, args[2] .. "%")
+				return theme.fg({ color = theme.battery_crit, text = args[2] .. "%" })
 			elseif args[2] < 6 then
 				baticon.image = image(beautiful.widget_bat_crit)
 			else
 				baticon.image = image(beautiful.widget_bat_hi)
-				return theme.fg(theme.green, args[2] .. "%")
+				return theme.fg({ color = theme.battery_high, text = args[2] .. "%" })
 			end
 		end, 61, bat)
 

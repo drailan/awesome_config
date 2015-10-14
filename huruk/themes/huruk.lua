@@ -1,4 +1,4 @@
---- HrrGrrv2 ---
+--- HrrGrrv2 4 Huruk ---
 
 -- lets get our location -- 
 local awful = require("awful")
@@ -6,16 +6,26 @@ local AWESOME_DIR = awful.util.getdir("config")
 
 theme = {}
 
-function theme.fg(color, text) return '<span color="' .. color .. '">' .. text .. '</span>' end 
+function theme.fg(t) 
+	local weight = t.weight or "normal"
+	local color = assert(t.color)
+	local text = assert(t.text)
+	local font = t.font or theme.font
+
+	return '<span weight="' .. weight .. '" color="' .. color .. '">' .. text .. '</span>' 		
+end
 
 local na = awful.util.color_strip_alpha
 
 function theme.init()
 	theme.spacer.text= " "
-	theme.leftcap.text = theme.fg(theme.grey, "[") 
-	theme.midcap.text = theme.fg(theme.grey, "][")
-	theme.rightcap.text = theme.fg(theme.grey, "]")
+	theme.leftcap.text = theme.fg({ color = theme.leftcap_c, text = "[" }) 
+	theme.midcap.text = theme.fg({ color = theme.midcap_c, text = "][" })
+	theme.rightcap.text = theme.fg({ color = theme.rightcap_c, text = "]" })
 end
+
+-- 0JzRg9GA0LMsIA==8178474d046cf2f0acf23f67ca963f24e116b0d91d3dde17b602688177efe5a849255d89fb782d91b4e824104a7a5d33c182ba062ffcb73317f8bec4e9460460 -- 
+theme.wallpaper_cmd = { "awsetbg " .. AWESOME_DIR .. "/huruk/кыся.jpg" }
 
 theme.font          = "terminus 8"
 
@@ -28,22 +38,6 @@ theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
-
--- todo figure out colors --
-theme.grey = "#404040"
-theme.bgrey = "#555753"
-theme.red = "#CC0000"
-theme.bred = "#EF2929"
-theme.green = "#4E9A06"
-theme.bgreen = "#8AE234"
-theme.yellow = "#C4A000"
-theme.byellow = "#FCE94F"
-theme.blue = "#195089"
-theme.bblue = "#729FCF"
-theme.purple = "#75507B"
-theme.bpurple = "#AD7FAB"
-theme.cyan = "#16A8AA"
-theme.bcyan = "#34E2E2"
 
 theme.border_width  = "1"
 theme.border_normal = "#000000"
@@ -86,9 +80,6 @@ theme.titlebar_maximized_button_focus_inactive  = AWESOME_DIR .. "/huruk/titleba
 theme.titlebar_maximized_button_normal_active = AWESOME_DIR .. "/huruk/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = AWESOME_DIR .. "/huruk/titlebar/maximized_focus_active.png"
 
--- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "awsetbg " .. AWESOME_DIR .. "/huruk/кыся.jpg" }
-
 -- You can use your own layout icons like this:
 theme.layout_fairh = AWESOME_DIR .. "/huruk/layouts/fairhw.png"
 theme.layout_fairv = AWESOME_DIR .. "/huruk/layouts/fairvw.png"
@@ -108,8 +99,58 @@ theme.leftcap = widget({ type = "textbox"})
 theme.midcap = widget({ type = "textbox"})
 theme.rightcap = widget({ type = "textbox"})
 
-theme.fg_widget_clock  = na(theme.border_focus)
-theme.fg_widget_value  = na(theme.fg_normal)
-theme.fg_widget_value_important  = "#E80F28"
+-- COLORS --
+
+-- help --
+theme.help_grp = "#E80F28" -- red-ish
+theme.help_key = "#535d6c" -- blue-grey-ish
+theme.help_msg = "#aaaaaa" -- light-grey
+
+-- separators --
+theme.leftcap_c = "#404040" -- grey
+theme.midcap_c =  "#404040" -- grey
+theme.rightcap_c = "#404040" -- grey
+
+-- widgets
+
+-- memory --
+theme.memory = "#aaaaaa"
+
+-- cpu -- 
+theme.cpu_spacer = "#404040"
+theme.cpu_low = "#4E9A06" -- green
+theme.cpu_med = "#C4A000" -- yellow
+theme.cpu_high = "#CC0000" -- red
+theme.cpu_wtf = "#EF2929" -- bright red
+
+-- wifi -- 
+theme.wifi_off = "#EF2929" -- bright red
+theme.wifi_low = "#CC0000" -- red
+theme.wifi_mid = "#C4A000" -- yellow
+theme.wifi_hi = "#4E9A06" -- green
+
+-- mpd --
+-- mpd --
+theme.mpd_paused = "#4DBD33" -- green
+theme.mpd_stopped = "#4DBD33" -- green
+theme.mpd_playing = "#4DBD33" -- green
+
+-- hostname --
+theme.hostname_host = "#4E9A06" -- green
+theme.hostname_at = "#16A8AA" -- cyan
+theme.hostname_hostname = "#16A8AA" -- cyan
+
+-- volume -- 
+theme.volume_low = "#CC0000" -- red
+theme.volume_mid = "#C4A000" -- yellow
+theme.volume_hi = "#4E9A06" -- green
+theme.volume_wtf = "#CC0000" -- red
+
+-- battery --
+theme.battery_high = "#4E9A06" -- green
+theme.battery_mid = "#C4A000" -- yellow
+theme.battery_lo = "#CC0000" -- red
+theme.battery_crit = "#EF2929" -- bright red
+
 
 return theme

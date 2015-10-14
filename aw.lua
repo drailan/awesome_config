@@ -12,13 +12,13 @@ local keybindings = require("huruk.keybindings")
 local menu        = require("huruk.menu")
 local tasklist    = require("huruk.tasklist")
 local widgets     = require("huruk.widgets")
-local keydoct = require("huruk.keydoc")
+local keydoct 	= require("huruk.keydoc")
 
 -- home --
 local CONFIG_DIR = awful.util.getdir("config");
 
 -- theme init --
-beautiful.init(CONFIG_DIR .. "/huruk/theme.lua")
+beautiful.init(CONFIG_DIR .. "/huruk/current_theme/theme.lua")
 theme.init()
 
 -- This is used later as the default terminal and editor to run.
@@ -49,9 +49,17 @@ layouts =
 
 -- tags -- 
 -- pick your layouts for each screen -- 
+
+-- list  = { "α", "β", "γ", "δ", "ε" }, 
+list = {"α", "ня", "γ", "δ", "ε" }
+
+-- does not work for some reason
+-- for l = 1, list.count() do
+-- 	list[l] = theme.fg({ text = list[l], color = "#4DBD33" })
+-- end
+
 tags = {
-  -- names  = { "α", "β", "γ", "δ", "ε" }, 
-  names  = { "α", "ня", "γ", "δ", "ε" }, 
+  names =  list , 
   layout = { layouts[2], layouts[2], layouts[2], layouts[2], layouts[2] }
 }
 

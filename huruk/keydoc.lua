@@ -95,11 +95,18 @@ local function markup(keys)
    		local help, group = doc[key].help, doc[key].group
 
 		local skey = key2str(key)
-		result[group] = (result[group] or "") ..
-			'<span font="Terminus 8" color="' .. beautiful.fg_widget_clock .. '"> ' ..
-			string.format("%" .. (longest - unilen(skey)) .. "s  ", "") .. skey ..
-			'</span>  <span color="' .. beautiful.fg_widget_value .. '">' ..
-			help .. '</span>\n'
+
+		key = {
+			color = beautiful.help_key,
+			text = string.format("%" .. (longest - unilen(skey)) .. "s ", "") .. skey
+		}
+
+		explanation = {
+			color = beautiful.help_msg,
+			text = help
+		}
+
+		result[group] = (result[group] or "") .. theme.fg(key) .. " " .. theme.fg(explanation) .. "\n"
 		end
    	end
 
@@ -117,13 +124,20 @@ function keydoc.display()
    	local result = ""
    	for group, res in pairs(strings) do
 		if #result > 0 then result = result .. "\n" end
-		result = result .. '<span weight="bold" color="' .. beautiful.fg_widget_value_important .. '">' .. group .. "</span>\n" .. res
+
+		params = {
+			text = group,
+			weight = 'bold',
+			color = theme.help_grp
+		}
+
+		result = result .. theme.fg(params) .. "\n" .. res
    	end
 
    	nid = naughty.notify({ 
 			text = result,
 			replaces_id = nid,
-			hover_timeout = 0.1,
+			hover_timeout = 30,
 			timeout = 30 
 		}).id
 end
