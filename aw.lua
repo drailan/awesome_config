@@ -12,7 +12,7 @@ local keybindings = require("huruk.keybindings")
 local menu        = require("huruk.menu")
 local tasklist    = require("huruk.tasklist")
 local widgets     = require("huruk.widgets")
-local keydoct 	= require("huruk.keydoc")
+local keydoc 	= require("huruk.keydoc")
 
 -- home --
 local CONFIG_DIR = awful.util.getdir("config");
@@ -52,11 +52,6 @@ layouts =
 
 -- list  = { "α", "β", "γ", "δ", "ε" }, 
 list = {"α", "ня", "γ", "δ", "ε" }
-
--- does not work for some reason
--- for l = 1, list.count() do
--- 	list[l] = theme.fg({ text = list[l], color = "#4DBD33" })
--- end
 
 tags = {
   names =  list , 
